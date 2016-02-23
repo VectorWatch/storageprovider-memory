@@ -2,6 +2,10 @@ var util = require('util');
 var StorageProviderAbstract = require('vectorwatch-storageprovider-abstract');
 var Promise = require('bluebird');
 
+/**
+ * @constructor
+ * @augments StorageProviderAbstract
+ */
 function StorageProviderMemory() {
     StorageProviderAbstract.call(this);
 
@@ -10,15 +14,24 @@ function StorageProviderMemory() {
 }
 util.inherits(StorageProviderMemory, StorageProviderAbstract);
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.storeAuthTokensAsync = function(credentialsKey, authTokens) {
     this.authTable[credentialsKey] = authTokens;
     return Promise.resolve();
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.getAuthTokensByCredentialsKeyAsync = function(credentialsKey) {
     return Promise.resolve(this.authTable[credentialsKey]);
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function(channelLabel) {
     var credentialsKey = (this.userSettingsTable[channelLabel] || {}).credentialsKey;
     if (!credentialsKey) {
@@ -27,6 +40,9 @@ StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function(chan
     return this.getAuthTokensByCredentialsKeyAsync(credentialsKey);
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, userSettings, credentialsKey) {
     if (!this.userSettingsTable[channelLabel]) {
         this.userSettingsTable[channelLabel] = {
@@ -39,6 +55,9 @@ StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, 
     this.userSettingsTable[channelLabel].count++;
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.removeUserSettingsAsync = function(channelLabel) {
     var userSettingsObject = this.userSettingsTable[channelLabel];
     if (userSettingsObject) {
@@ -51,6 +70,9 @@ StorageProviderMemory.prototype.removeUserSettingsAsync = function(channelLabel)
     return Promise.resolve();
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.getAllUserSettingsAsync = function() {
     var results = [];
     for (var channelLabel in this.userSettingsTable) {
@@ -64,6 +86,9 @@ StorageProviderMemory.prototype.getAllUserSettingsAsync = function() {
     return Promise.resolve(results);
 };
 
+/**
+ * @inheritdoc
+ */
 StorageProviderMemory.prototype.getUserSettingsAsync = function(channelLabel) {
     var userSettingsObject = this.userSettingsTable[channelLabel];
 
