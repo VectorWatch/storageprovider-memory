@@ -39,7 +39,7 @@ StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, 
     this.userSettingsTable[channelLabel].count++;
 };
 
-StorageProviderMemory.prototype.removeUserSettingAsync = function(channelLabel) {
+StorageProviderMemory.prototype.removeUserSettingsAsync = function(channelLabel) {
     var userSettingsObject = this.userSettingsTable[channelLabel];
     if (userSettingsObject) {
         userSettingsObject.count--;
