@@ -1,6 +1,6 @@
 {
   "name": "vectorwatch-storageprovider-memory",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A VectorWatch StorageProvider that stores data in memory.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.3.1",
-    "vectorwatch-storageprovider-abstract": "^1.0.0"
+    "vectorwatch-storageprovider-abstract": "~1.1.0"
   },
   "devDependencies": {},
   "repository": {
