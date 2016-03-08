@@ -11,6 +11,7 @@ function StorageProviderMemory() {
 
     this.authTable = {};
     this.userSettingsTable = {};
+    this.appSettingsTable = {};
 }
 util.inherits(StorageProviderMemory, StorageProviderAbstract);
 
@@ -102,5 +103,86 @@ StorageProviderMemory.prototype.getUserSettingsAsync = function(channelLabel) {
         authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
     });
 };
+
+/**
+ * @inheritdoc
+ */
+StorageProviderMemory.prototype.storeAppSettingsAsync = function(userKey, userSettings, credentialsKey, ttl) {
+    if (!this.appSettingsTable[userKey]) {
+        this.appSettingsTable[userKey] = {
+            expiresAt: 0,
+            userSettings: userSettings,
+            credentialsKey: credentialsKey
+        };
+    }
+
+    this.appSettingsTable[userKey].expiresAt = Date.now() + ttl * 1000;
+};
+
+/**
+ * @inheritdoc
+ */
+StorageProviderMemory.prototype.removeExpiredAppSettingsAsync = function() {
+    var results = [];
+    for (var userKey in this.appSettingsTable) {
+        if (this.appSettingsTable[userKey].expiresAt > Date.now()) {
+            continue;
+        }
+
+        results.push({
+            userKey: userKey,
+            userSettings: this.appSettingsTable[userKey],
+            authTokens: this.authTable[this.appSettingsTable[userKey].credentialsKey]
+        });
+    }
+
+    for (var i in results) {
+        delete this.appSettingsTable[results[i].userKey];
+    }
+
+    return Promise.resolve(results);
+};
+
+/**
+ * @inheritdoc
+ */
+StorageProviderMemory.prototype.getAllAppSettingsAsync = function() {
+    var results = [];
+    for (var channelLabel in this.userSettingsTable) {
+        if (this.appSettingsTable[userKey].expiresAt <= Date.now()) {
+            continue;
+        }
+
+        results.push({
+            channelLabel: channelLabel,
+            userSettings: this.userSettingsTable[channelLabel],
+            authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
+        });
+    }
+
+    return Promise.resolve(results);
+};
+
+/**
+ * @inheritdoc
+ */
+StorageProviderMemory.prototype.getAppSettingsAsync = function(userKey) {
+    var appSettingsObject = this.appSettingsTable[userKey];
+
+    if (!appSettingsObject) {
+        return Promise.resolve();
+    }
+
+    if (appSettingsObject.expiresAt <= Date.now()) {
+        return Promise.resolve();
+    }
+
+    return Promise.resolve({
+        userKey: userKey,
+        userSettings: this.appSettingsTable[userKey],
+        authTokens: this.authTable[this.appSettingsTable[userKey].credentialsKey]
+    });
+};
+
 
 module.exports = StorageProviderMemory;
