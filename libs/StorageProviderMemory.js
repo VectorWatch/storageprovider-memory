@@ -117,6 +117,8 @@ StorageProviderMemory.prototype.storeAppSettingsAsync = function(userKey, userSe
     }
 
     this.appSettingsTable[userKey].expiresAt = Date.now() + ttl * 1000;
+	
+    return Promise.resolve();
 };
 
 /**
