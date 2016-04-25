@@ -54,6 +54,7 @@ StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, 
     }
 
     this.userSettingsTable[channelLabel].count++;
+    return Promise.resolve();
 };
 
 /**
