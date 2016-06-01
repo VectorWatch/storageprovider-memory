@@ -80,7 +80,7 @@ StorageProviderMemory.prototype.getAllUserSettingsAsync = function() {
     for (var channelLabel in this.userSettingsTable) {
         results.push({
             channelLabel: channelLabel,
-            userSettings: this.userSettingsTable[channelLabel],
+            userSettings: this.userSettingsTable[channelLabel].userSettings,
             authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
         });
     }
@@ -100,7 +100,7 @@ StorageProviderMemory.prototype.getUserSettingsAsync = function(channelLabel) {
 
     return Promise.resolve({
         channelLabel: channelLabel,
-        userSettings: this.userSettingsTable[channelLabel],
+        userSettings: this.userSettingsTable[channelLabel].userSettings,
         authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
     });
 };
@@ -134,7 +134,7 @@ StorageProviderMemory.prototype.removeExpiredAppSettingsAsync = function() {
 
         results.push({
             userKey: userKey,
-            userSettings: this.appSettingsTable[userKey],
+            userSettings: this.appSettingsTable[userKey].userSettings,
             authTokens: this.authTable[this.appSettingsTable[userKey].credentialsKey]
         });
     }
@@ -158,7 +158,7 @@ StorageProviderMemory.prototype.getAllAppSettingsAsync = function() {
 
         results.push({
             channelLabel: channelLabel,
-            userSettings: this.userSettingsTable[channelLabel],
+            userSettings: this.userSettingsTable[channelLabel].userSettings,
             authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
         });
     }
@@ -182,7 +182,7 @@ StorageProviderMemory.prototype.getAppSettingsAsync = function(userKey) {
 
     return Promise.resolve({
         userKey: userKey,
-        userSettings: this.appSettingsTable[userKey],
+        userSettings: this.appSettingsTable[userKey].userSettings,
         authTokens: this.authTable[this.appSettingsTable[userKey].credentialsKey]
     });
 };
