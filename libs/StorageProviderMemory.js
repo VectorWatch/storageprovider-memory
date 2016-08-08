@@ -18,7 +18,7 @@ util.inherits(StorageProviderMemory, StorageProviderAbstract);
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.storeAuthTokensAsync = function (credentialsKey, authTokens) {
+StorageProviderMemory.prototype.storeAuthTokensAsync = function(credentialsKey, authTokens) {
     this.authTable[credentialsKey] = authTokens;
     return Promise.resolve();
 };
@@ -26,14 +26,14 @@ StorageProviderMemory.prototype.storeAuthTokensAsync = function (credentialsKey,
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getAuthTokensByCredentialsKeyAsync = function (credentialsKey) {
+StorageProviderMemory.prototype.getAuthTokensByCredentialsKeyAsync = function(credentialsKey) {
     return Promise.resolve(this.authTable[credentialsKey]);
 };
 
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function (channelLabel) {
+StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function(channelLabel) {
     var credentialsKey = (this.userSettingsTable[channelLabel] || {}).credentialsKey;
     if (!credentialsKey) {
         return Promise.resolve();
@@ -44,7 +44,7 @@ StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function (cha
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.storeUserSettingsAsync = function (channelLabel, userSettings, credentialsKey, isContextual) {
+StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, userSettings, credentialsKey, isContextual) {
 
     if (!this.userSettingsTable[channelLabel]) {
         this.userSettingsTable[channelLabel] = {
@@ -65,7 +65,7 @@ StorageProviderMemory.prototype.storeUserSettingsAsync = function (channelLabel,
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.removeUserSettingsAsync = function (channelLabel) {
+StorageProviderMemory.prototype.removeUserSettingsAsync = function(channelLabel) {
     var userSettingsObject = this.userSettingsTable[channelLabel];
     if (userSettingsObject) {
         userSettingsObject.count--;
@@ -80,7 +80,7 @@ StorageProviderMemory.prototype.removeUserSettingsAsync = function (channelLabel
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getAllUserSettingsAsync = function () {
+StorageProviderMemory.prototype.getAllUserSettingsAsync = function() {
     var results = [];
     for (var channelLabel in this.userSettingsTable) {
         results.push({
@@ -96,7 +96,7 @@ StorageProviderMemory.prototype.getAllUserSettingsAsync = function () {
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getUserSettingsAsync = function (channelLabel) {
+StorageProviderMemory.prototype.getUserSettingsAsync = function(channelLabel) {
     var userSettingsObject = this.userSettingsTable[channelLabel];
 
     if (!userSettingsObject) {
@@ -113,7 +113,7 @@ StorageProviderMemory.prototype.getUserSettingsAsync = function (channelLabel) {
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.storeAppSettingsAsync = function (userKey, userSettings, credentialsKey, ttl) {
+StorageProviderMemory.prototype.storeAppSettingsAsync = function(userKey, userSettings, credentialsKey, ttl) {
     if (!this.appSettingsTable[userKey]) {
         this.appSettingsTable[userKey] = {
             expiresAt: 0,
@@ -130,7 +130,7 @@ StorageProviderMemory.prototype.storeAppSettingsAsync = function (userKey, userS
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.removeExpiredAppSettingsAsync = function () {
+StorageProviderMemory.prototype.removeExpiredAppSettingsAsync = function() {
     var results = [];
     for (var userKey in this.appSettingsTable) {
         if (this.appSettingsTable[userKey].expiresAt > Date.now()) {
@@ -154,7 +154,7 @@ StorageProviderMemory.prototype.removeExpiredAppSettingsAsync = function () {
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getAllAppSettingsAsync = function () {
+StorageProviderMemory.prototype.getAllAppSettingsAsync = function() {
     var results = [];
     for (var channelLabel in this.userSettingsTable) {
         if (this.appSettingsTable[userKey].expiresAt <= Date.now()) {
@@ -174,7 +174,7 @@ StorageProviderMemory.prototype.getAllAppSettingsAsync = function () {
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.getAppSettingsAsync = function (userKey) {
+StorageProviderMemory.prototype.getAppSettingsAsync = function(userKey) {
     var appSettingsObject = this.appSettingsTable[userKey];
 
     if (!appSettingsObject) {
