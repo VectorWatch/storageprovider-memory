@@ -81,7 +81,8 @@ StorageProviderMemory.prototype.getAllUserSettingsAsync = function() {
         results.push({
             channelLabel: channelLabel,
             userSettings: this.userSettingsTable[channelLabel].userSettings,
-            authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey]
+            authTokens: this.authTable[this.userSettingsTable[channelLabel].credentialsKey],
+            credentialsKey: this.userSettingsTable[channelLabel].credentialsKey
         });
     }
 
