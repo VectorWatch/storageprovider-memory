@@ -44,13 +44,18 @@ StorageProviderMemory.prototype.getAuthTokensByChannelLabelAsync = function(chan
 /**
  * @inheritdoc
  */
-StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, userSettings, credentialsKey) {
+StorageProviderMemory.prototype.storeUserSettingsAsync = function(channelLabel, userSettings, credentialsKey, isContextual) {
+
     if (!this.userSettingsTable[channelLabel]) {
         this.userSettingsTable[channelLabel] = {
             count: 0,
             userSettings: userSettings,
             credentialsKey: credentialsKey
         };
+    } else {
+        if (isContextual) {
+            this.userSettingsTable[channelLabel].userSettings = userSettings;
+        }
     }
 
     this.userSettingsTable[channelLabel].count++;
@@ -119,7 +124,7 @@ StorageProviderMemory.prototype.storeAppSettingsAsync = function(userKey, userSe
     }
 
     this.appSettingsTable[userKey].expiresAt = Date.now() + ttl * 1000;
-	
+
     return Promise.resolve();
 };
 
